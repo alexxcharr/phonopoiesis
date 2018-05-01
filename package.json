@@ -1,0 +1,23 @@
+
+//configuration file
+
+{
+  "name": "sockets",
+  "version": "1.0.0",
+  "description": "interactive website",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "web",
+    "socket"
+  ],
+  "author": "alex charalampidi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
