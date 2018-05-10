@@ -1,0 +1,40 @@
+body {
+  margin:0;
+  padding:0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.button-large.clicked {
+  background-color: black;
+ }
+
+.button-large {
+  margin: 0.5%;
+  width: 8vw;
+}
+
+#container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#butcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}
+
+canvas {
+  position: fixed;
+   top:0;
+   left:0;
+   width:100%;
+   height:100%;
+   z-index:-1;
+   background: grey;
+}

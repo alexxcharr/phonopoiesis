@@ -17,6 +17,12 @@ function newConnection(socket) {  //triggered with new socket connections
  console.log('new connection: ' + socket.id);
 
  socket.on('mouse', mouseMsg); //triggered when theres msg
+ socket.on('space', spaceMsg);
+
+ function spaceMsg(data2) {
+   socket.broadcast.emit('space', data2);
+   console.log(data2);
+ }
 
  function mouseMsg(data) {  //logs the msg on the server
    socket.broadcast.emit('mouse', data); //msg send out
