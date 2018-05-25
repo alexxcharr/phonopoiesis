@@ -12,6 +12,7 @@ body {
 .button-large {
   margin: 0.5%;
   width: 8vw;
+  opacity: 0.6;
 }
 
 #container {
