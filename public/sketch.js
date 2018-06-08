@@ -15,24 +15,23 @@ var sessionid;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	background(150, 80);
-	waveRec = new p5.Oscillator();
+	waveRec = new p5.Oscillator();	//creatng sound
 	waveRec.setType('triangle');
 	wave = new p5.Oscillator();
 	wave.setType('triangle');
 	wave.amp(0.5);
 	wave.freq(300);
-	reverb = new p5.Reverb();
-	wave.disconnect();
-	reverb.process(wave, 3, 2);
+	// reverb = new p5.Reverb();
+	// wave.disconnect();
+	// reverb.process(wave, 3, 2);
 	socket = io.connect(location.host);	//open connection to the server
-	socket.on('connect',  function() {	//pou vgainei o solinas
+	socket.on('connect',  function() {
   	sessionid = socket.id;
 		console.log(sessionid);
 	});
 	socket.on('coo', newDrawing);	//when data comes draw
-	socket.on('stop', stopWave);	//
-	socket.on('arUsers', function (data) {	//
+	socket.on('stop', stopWave);	//when mouseReleased stop
+	socket.on('arUsers', function (data) {	//for enery user create newShape
 		for (let i = 0; i < data.length; i++) {
 			users[i] = [data[i], new Shape(-500, -400)];
 		}
@@ -47,9 +46,9 @@ function newDrawing(data) {
 	waveRec.amp(0.8);
 	freqRec = map(data.y, 100, 800, 0, windowHeight);
 	waveRec.freq(freqRec);
-	reverbRec = new p5.Reverb();
-	waveRec.disconnect();
-	reverb.process(waveRec, 2, 0.5);
+	// reverbRec = new p5.Reverb();
+	// waveRec.disconnect();
+	// reverb.process(waveRec, 2, 0.5);
 	waveRec.start();
 	console.log('sound');
 	for (let i = 0; i <= users.length; i++) {
@@ -92,7 +91,6 @@ function mouseReleased() {
 }
 
 function sendMouse(xpos, ypos, sessionid) {
-	// console.log(xpos, ypos);
 	var data = {
 		x: xpos,
 		y: ypos,
