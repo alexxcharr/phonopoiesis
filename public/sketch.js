@@ -15,7 +15,7 @@ var sessionid;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	background (50);
+	background(150, 80);
 	waveRec = new p5.Oscillator();
 	waveRec.setType('triangle');
 	wave = new p5.Oscillator();
@@ -25,7 +25,7 @@ function setup() {
 	reverb = new p5.Reverb();
 	wave.disconnect();
 	reverb.process(wave, 3, 2);
-	socket = io.connect('http://localhost:3000');	//open connection to the server
+	socket = io.connect(location.host);	//open connection to the server
 	socket.on('connect',  function() {	//pou vgainei o solinas
   	sessionid = socket.id;
 		console.log(sessionid);
@@ -34,7 +34,7 @@ function setup() {
 	socket.on('stop', stopWave);	//
 	socket.on('arUsers', function (data) {	//
 		for (let i = 0; i < data.length; i++) {
-			users[i] = [data[i], new Shape(10, 10)];
+			users[i] = [data[i], new Shape(-500, -400)];
 		}
 	});
 }
@@ -49,7 +49,7 @@ function newDrawing(data) {
 	waveRec.freq(freqRec);
 	reverbRec = new p5.Reverb();
 	waveRec.disconnect();
-	reverb.process(waveRec, 3, 2);
+	reverb.process(waveRec, 2, 0.5);
 	waveRec.start();
 	console.log('sound');
 	for (let i = 0; i <= users.length; i++) {
@@ -62,12 +62,15 @@ function newDrawing(data) {
 
 function draw() {
 
-	background (50);
+	background (100);
 	for (let i = 0; i < array.length; i++) {
 		array[i].show();
+		array[i].move();
+
 	}
 	for (let i = 0; i < users.length; i++) {
 		users[i][1].show();
+		users[i][1].move();
 	}
 }
 
@@ -98,22 +101,22 @@ function sendMouse(xpos, ypos, sessionid) {
 	socket.emit('coo', data);
 }
 
-// function touchStarted() {
-// 	freq = map(mouseY, 100, 800, 0, windowHeight);
-// 	wave.freq(freq);
-// 	wave.start();
-// 	let s = new Shape(mouseX, mouseY);
-// 	array[0] = s;
-// 	sendMouse(mouseX, mouseY);
-// }
-//
-// function touchEnded() {
-// 	wave.stop();
-// 	var data = {
-// 		m: 'stop'
-// 	}
-// 	socket.emit('stop', data);
-// }
+function touchStarted() {
+	freq = map(mouseY, 100, 800, 0, windowHeight);
+	wave.freq(freq);
+	wave.start();
+	let s = new Shape(mouseX, mouseY);
+	array[0] = s;
+	sendMouse(mouseX, mouseY);
+}
+
+function touchEnded() {
+	wave.stop();
+	var data = {
+		m: 'stop'
+	}
+	socket.emit('stop', data);
+}
 
 function mouseDragged() {
 	freq = map(mouseY, 100, 800, 0, windowHeight);
